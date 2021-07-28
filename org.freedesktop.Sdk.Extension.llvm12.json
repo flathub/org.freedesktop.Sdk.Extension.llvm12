@@ -9,8 +9,8 @@
   "appstream-compose": false,
   "build-options": {
     "prefix": "/usr/lib/sdk/llvm12",
-    "prepend-ld-library-path": "/usr/lib/sdk/llvm11/lib",
-    "prepend-path": "/usr/lib/sdk/llvm11/bin"
+    "prepend-ld-library-path": "/usr/lib/sdk/llvm12/lib",
+    "prepend-path": "/usr/lib/sdk/llvm12/bin"
   },
   "modules": [
     {
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "name": "llvm",
+      "name": "llvm-stage1",
       "buildsystem": "cmake-ninja",
       "subdir": "llvm",
       "builddir": true,
@@ -52,6 +52,78 @@
         },
         "cflags": "-g0",
         "cxxflags": "-g0"
+      },
+      "config-opts": [
+        "-DLLVM_ENABLE_PROJECTS='clang;compiler-rt;lld'",
+        "-DLLVM_ENABLE_ASSERTIONS:BOOL=OFF",
+        "-DBUILD_SHARED_LIBS:BOOL=OFF",
+        "-DLLVM_BUILD_LLVM_DYLIB:BOOL=ON",
+        "-DLLVM_LINK_LLVM_DYLIB:BOOL=ON",
+        "-DCLANG_LINK_CLANG_DYLIB=ON",
+        "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+        "-DLLVM_LIBDIR_SUFFIX=''",
+        "-DLLVM_ENABLE_LIBCXX:BOOL=OFF",
+        "-DLLVM_ENABLE_ZLIB:BOOL=ON",
+        "-DLLVM_ENABLE_FFI:BOOL=ON",
+        "-DLLVM_ENABLE_RTTI:BOOL=ON",
+        "-DLLVM_INCLUDE_TESTS:BOOL=OFF",
+        "-DLLVM_INCLUDE_EXAMPLES:BOOL=OFF",
+        "-DLLVM_INCLUDE_UTILS:BOOL=ON",
+        "-DLLVM_INSTALL_UTILS:BOOL=ON",
+        "-DLLVM_INCLUDE_DOCS:BOOL=OFF",
+        "-DLLVM_ENABLE_DOXYGEN:BOOL=OFF",
+        "-DLLVM_BUILD_EXTERNAL_COMPILER_RT:BOOL=ON",
+        "-DLLVM_BINUTILS_INCDIR=/usr/include",
+        "-DLLVM_INSTALL_TOOLCHAIN_ONLY:BOOL=OFF",
+        "-DCMAKE_C_FLAGS_RELWITHDEBINFO='-DNDEBUG'",
+        "-DCMAKE_CXX_FLAGS_RELWITHDEBINFO='-DNDEBUG'"
+      ],
+      "cleanup": [
+        "*"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/llvm-project-12.0.1.src.tar.xz",
+          "sha256": "129cb25cd13677aad951ce5c2deb0fe4afc1e9d98950f53b51bdcfb5a73afa0e"
+        },
+        {
+          "type": "patch",
+          "path": "patches/llvm/llvm-fix-tsan-build.patch"
+        }
+      ]
+    },
+    {
+      "name": "llvm",
+      "buildsystem": "cmake-ninja",
+      "subdir": "llvm",
+      "builddir": true,
+      "build-options": {
+        "arch": {
+          "aarch64": {
+            "cflags": "-Qunused-arguments",
+            "cxxflags": "-Qunused-arguments",
+            "config-opts": [
+              "-DFFI_INCLUDE_DIR=/usr/lib/aarch64-linux-gnu/libffi-3.2.1/include",
+              "-DLLVM_DEFAULT_TARGET_TRIPLE=aarch64-unknown-linux-gnu",
+              "-DLLVM_TARGETS_TO_BUILD='AArch64'"
+            ]
+          },
+          "x86_64": {
+            "config-opts": [
+              "-DFFI_INCLUDE_DIR=/usr/lib/x86_64-linux-gnu/libffi-3.2.1/include",
+              "-DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-unknown-linux-gnu",
+              "-DLLVM_TARGETS_TO_BUILD='X86;AMDGPU;NVPTX'"
+            ]
+          }
+        },
+        "cflags": "-g0",
+        "cxxflags": "-g0",
+        "env": {
+          "CC": "clang",
+          "CXX": "clang++"
+        },
+        "ldflags": "-fuse-ld=lld"
       },
       "config-opts": [
         "-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;lld;lldb'",
