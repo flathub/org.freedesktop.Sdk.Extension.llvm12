@@ -79,7 +79,7 @@
         "-DCMAKE_CXX_FLAGS_RELWITHDEBINFO='-DNDEBUG'"
       ],
       "cleanup": [
-        "*"
+        "libLLVM*.a"
       ],
       "sources": [
         {
