@@ -9,8 +9,8 @@
   "appstream-compose": false,
   "build-options": {
     "prefix": "/usr/lib/sdk/llvm12",
-    "cflags": "-g0",
-    "cxxflags": "-g0"
+    "cflags": "-g1",
+    "cxxflags": "-g1"
     },
   "modules": [
     {
