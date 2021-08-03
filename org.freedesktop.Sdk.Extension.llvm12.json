@@ -87,10 +87,6 @@
         },
         {
           "type": "patch",
-          "path": "patches/link-clang-shared.patch"
-        },
-        {
-          "type": "patch",
           "path": "patches/link-clang-tools-extra-shared.patch"
         },
         {
@@ -159,7 +155,8 @@
         "-DLLVM_INCLUDE_DOCS:BOOL=OFF",
         "-DLLVM_BINUTILS_INCDIR=/usr/include",
         "-DCLANG_LINK_CLANG_DYLIB=ON",
-        "-Wno-dev"
+        "-Wno-dev",
+        "-DLLVM_BUILD_STATIC:BOOL=OFF"
       ],
       "cleanup": [
         "/include/clang-tidy",
@@ -175,10 +172,6 @@
         {
           "type": "patch",
           "path": "patches/llvm-fix-tsan-build.patch"
-        },
-        {
-          "type": "patch",
-          "path": "patches/link-clang-shared.patch"
         },
         {
           "type": "patch",
