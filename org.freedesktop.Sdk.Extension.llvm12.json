@@ -57,7 +57,7 @@
         "-DCMAKE_BUILD_TYPE=Release",
         "-DCMAKE_C_FLAGS_RELEASE='-DNDEBUG'",
         "-DCMAKE_CXX_FLAGS_RELEASE='-DNDEBUG'",
-        "-DLLVM_ENABLE_PROJECTS='clang;compiler-rt;lld'",
+        "-DLLVM_ENABLE_PROJECTS='clang;lld'",
         "-DLLVM_TARGETS_TO_BUILD='Native'",
         "-DLLVM_LIBDIR_SUFFIX=''",
         "-DLLVM_INCLUDE_TESTS:BOOL=OFF",
