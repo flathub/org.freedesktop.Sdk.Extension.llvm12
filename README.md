@@ -46,7 +46,7 @@ If your app dynamically links to any shared library provided by this extension t
 cp /usr/lib/sdk/llvm12/lib/libLLVM-12.so /app/lib/
 ```
 
-### Debugging/Development
+### Debuggging/Development
 
 In order to use this extension in flatpak SDK environment you may add all provided tools in your PATH by executing first:
 ```
